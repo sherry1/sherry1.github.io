@@ -110,12 +110,18 @@ a img {
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
 }
+html {
+  min-height: 100%;
+  height: 100%;
+}
 body {
   background: #ddd;
   font-family: "Helvetica Neue", "Helvetica", "Microsoft YaHei", "WenQuanYi Micro Hei", Arial, sans-serif;
   font-size: 100%;
   color: #817c7c;
   line-height: 1.5;
+  min-height: 100%;
+  height: 100%;
 }
 small {
   font-size: 80%;
@@ -367,8 +373,8 @@ body >header {
   width: 100%;
   -webkit-box-shadow: 2px 4px 5px rgba(3,3,3,0.2);
   box-shadow: 2px 4px 5px rgba(3,3,3,0.2);
-  background: #ea6753;
-  color: #fff;
+  background: #badeee;
+  color: #deeef7;
   padding: 1em 0 0.8em;
 }
 @media only screen and (min-width: 1024px) {
@@ -389,7 +395,6 @@ body >header >div {
 }
 body >header a {
   display: block;
-  color: #fff;
 }
 #imglogo {
   float: left;
@@ -521,8 +526,8 @@ header nav ul li a {
   }
 }
 header nav ul li a:hover {
-  background: #dd2c11;
-  color: #e9cd4c;
+  background: #5fb7df;
+  color: #deeef7;
 }
 .shownav {
   max-height: 40em;
@@ -557,6 +562,7 @@ header nav ul li a:hover {
 /* index layout */
 #container {
   width: 95%;
+  min-height: 100%;
   margin: 0 auto;
   overflow: hidden;
 }
@@ -611,7 +617,7 @@ header nav ul li a:hover {
   }
 }
 #main section.post a:hover {
-  border-left: 0.5em solid #ea6753;
+  border-left: 0.5em solid #89ba17;
 }
 #main section.post a h1 {
   color: #2ca6cb;
@@ -793,6 +799,7 @@ header nav ul li a:hover {
 @media only screen and (min-width: 768px) {
   article header.article-info {
     border-bottom: 1px solid #dbdbdb;
+    border-left: 5px solid #89ba17;
   }
 }
 article header.article-info >h1 {
@@ -803,7 +810,6 @@ article header.article-info >h1 {
   word-break: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  border-left: 5px solid #ea6753;
 }
 @media only screen and (min-width: 1024px) {
   article header.article-info >h1 {
@@ -829,8 +835,8 @@ article header.article-info >p.article-time {
 }
 @media only screen and (min-width: 768px) {
   article header.article-info >p.article-time {
-    float: right;
-    margin-right: 1em;
+    float: left;
+    margin-left: 3%;
     padding-top: 0.1em;
     font-size: 0.9em;
   }
@@ -894,11 +900,9 @@ article .article-content h6 >code {
 article .article-content hr {
   border: 1px solid #dbdbdb;
 }
-article .article-content strong {
-  font-weight: bold;
-}
+article .article-content strong,
 article .article-content em {
-  font-style: italic;
+  font-weight: bold;
 }
 article .article-content acronym,
 article .article-content abbr {
@@ -906,7 +910,7 @@ article .article-content abbr {
 }
 article .article-content blockquote {
   border-left: 0.2em solid #ea6753;
-  margin: 0.65em 0 0.65em 4%;
+  margin: 0.65em 0 0.65em 0;
   padding-left: 1%;
   line-height: 1.5;
   font-size: 110%;
@@ -1452,7 +1456,7 @@ section.comment {
   border: 1px solid #fff;
   -webkit-border-radius: 5px;
   border-radius: 5px;
-  background: #ea6753;
+  background: #f08a00;
   padding: 0.2em 0.55em;
 }
 .openaside a::before {
@@ -1478,7 +1482,6 @@ section.comment {
 }
 @media only screen and (min-width: 1024px) {
   .closeaside {
-    display: block;
     position: absolute;
     right: 25px;
     top: 22px;
@@ -1572,7 +1575,7 @@ section.comment {
   background: #e6e6e6;
 }
 .rsspart {
-  background: #ea6753;
+  background: #f08a00;
   width: 100%;
 }
 @media only screen and (min-width: 768px) {
@@ -1596,8 +1599,8 @@ section.comment {
   text-align: center;
 }
 .rsspart a:hover {
-  color: #ea6753;
-  background: #fafafa;
+  color: #f08a00;
+  background: #fff1d6;
 }
 .rsspart a::before {
   font-family: "FontAwesome";
@@ -1628,7 +1631,7 @@ section.comment {
   padding: 0.5em;
 }
 .archiveslist li a:hover {
-  color: #ea6753;
+  color: #89ba17;
   -webkit-transition: color 0.25s;
   -moz-transition: color 0.25s;
   -o-transition: color 0.25s;
@@ -1719,8 +1722,9 @@ section.comment {
 }
 footer {
   margin-top: 1em;
-  background: #1f1f1f;
-  padding: 0 2% 0.5em;
+  background: #f08a00;
+  padding: 0.5em;
+  text-align: center;
 }
 #footer {
   width: 95%;
@@ -1839,8 +1843,7 @@ footer {
 .social-font a[title="weibo"]::before,
 .social-font a[title="twitter"]::before,
 .social-font a[title="github"]::before,
-.social-font a[title="facebook"]::before,
-.social-font a[title="linkedin"]::before {
+.social-font a[title="facebook"]::before {
   font-family: "FontAwesome";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -1856,9 +1859,6 @@ footer {
 }
 .social-font a[title="facebook"]::before {
   content: "\f09a";
-}
-.social-font a[title="linkedin"]::before {
-  content: "\f08c";
 }
 .copyright {
   -webkit-font-smoothing: antialiased;
