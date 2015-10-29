@@ -21,7 +21,7 @@
 能做什么?她内建了http服务器支持，所以可以开发个网站，应用等她还可以部署到非网络应用的环境下，比如一个命令行工具等、可以调用c/c++,可以充分利用已有的诸多数据库，也可以将对性能要求非常高的部分用C/C++来实现
 
 有何特点?异步式I/">
-<meta property="og:updated_time" content="2015-10-14T09:11:07.381Z">
+<meta property="og:updated_time" content="2015-10-16T02:37:48.189Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="node.js学习笔记（一）">
 <meta name="twitter:description" content="认识node
@@ -121,7 +121,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						
+						<a href="/tags/js/" style="font-size: 10px;">js</a> <a href="/tags/markdown/" style="font-size: 10px;">markdown</a> <a href="/tags/nodejs/" style="font-size: 20px;">nodejs</a> <a href="/tags/study-link/" style="font-size: 10px;">study link</a>
 					</div>
 				</section>
 				
@@ -206,6 +206,10 @@
       
       <div class="article-info article-info-post">
         
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/nodejs/">nodejs</a></li></ul>
+	</div>
+
         
 
         <div class="clearfix"></div>
@@ -224,6 +228,86 @@
 <li><p><strong>性能如何?</strong><br><em>通过以下方式提升性能</em><br>异步式I/O和事件驱动代替多线程<br>使用v8作为javascript引擎<br>使用高效的libev和libeio库支持事件驱动和异步式I/O</p>
 </li>
 </ul>
+<h2 id="node-js编程">node.js编程</h2><p><strong>一、hello world的实现</strong><br><em>方法一</em>：编辑<code>console.log(&#39;hello world&#39;);</code>，保存为helloworld.js文件，打开终端，进入helloworld.js所在的目录，执行以下命里<code>node helloworld.js</code><br><em>方法二</em>：<code>$ node -e &quot;console.log(&#39;Hello World&#39;);&quot;</code><br><em>方法三</em>：使用node的REPL模式（REPL模式即输入-求值-输出循环），打开shell，输入node就进入了REPL模式，会出现一个”&gt;”提示符提示你输入命令，直接输入”console.log(‘Hello World’);”`。<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ node</span><br><span class="line">&gt; <span class="built_in">console</span>.log(<span class="string">'Hello World'</span>);</span><br><span class="line">Hello World</span><br><span class="line"><span class="literal">undefined</span></span><br></pre></td></tr></table></figure></p>
+<p><strong>二、建立HTTP服务器</strong><br>node.js与php不用的是她不需要预先配置强大而复杂的http服务器，譬如Apache,她将‘http服务器’这一层抽离，直接面向浏览器用户。</p>
+<pre><code><span class="comment">//app.js</span>
+<span class="keyword">var</span> http = <span class="built_in">require</span>(<span class="string">'http'</span>);
+http.createServer(<span class="function"><span class="keyword">function</span>(<span class="params">req, res</span>) </span>{
+res.writeHead(<span class="number">200</span>, {<span class="string">'Content-Type'</span>: <span class="string">'text/html'</span>});
+res.write(<span class="string">'&lt;h1&gt;Node.js&lt;/h1&gt;'</span>);
+res.end(<span class="string">'&lt;p&gt;Hello World&lt;/p&gt;'</span>);
+}).listen(<span class="number">3000</span>);
+<span class="built_in">console</span>.log(<span class="string">"HTTP server is listening at port 3000."</span>);
+</code></pre><p>运行 node app.js 命令，打开浏览器访问<a href="http://127.0.0.1:3000,即可看到效果" target="_blank" rel="external">http://127.0.0.1:3000,即可看到效果</a><br>能用node.js实现http服务器最主要的一点就是她提供了http模块，通过调用此模块来实现。</p>
+<hr>
+<p><strong>tips：</strong><br>修改nodejs的代码保存后不会立即生效，必须终止再nodejs再重新运行方可生效，因为nodejs只有在第一次引用时才回去解析脚本文件，之后会直接访问内存，避免重复载入，这样有利于提高性能，但不利于调试，所以我们使用supervisor来监视代码的改动，并自动重启nodejs，使用方法如下：</p>
+<pre><code>$ npm install -<span class="keyword">g</span> supervisor  <span class="comment">//安装</span>
+....
+
+$ supervisor <span class="keyword">app</span>.js          <span class="comment">//启动</span>
+</code></pre><hr>
+<p><strong>三、异步式I/O与事件式编程</strong><br>1、同步式I/O（阻塞式I/O）<br>线程——遇到I/O操作（耗时）——操作系统剥夺其CPU控制权——线程暂停执行——资源让给其他线程（所以该模式必须是多线程）——I/O操作完毕——恢复该线程的CPU控制权，令其继续执行<br>2、异步式I/O（非阻塞式I/O）<br>线程——遇到I/O操作（耗时）——将I/O请求发送操作系统——线程继续执行<br>操作系统完成I/O操作——通知线程（以事件的形式）——线程在特定时候处理这个事件（线程必须事件循环，不断检查有无未处理的事件）</p>
+<p><strong>四、事件循环机制</strong><br>nodejs始终在事件循环中，但没有显式的事件循环函数，由libev库实现</p>
+<p><strong>五、模块和包（支柱）</strong><br>传统js通过script标签来实现脚本模块的拆分和组合<br>nodejs提供require函数来调用模块，而且模块都是<em>基于文件</em>的，模块和包没有本质区别，包可以理解成实现某个功能模块的集合。<br>1、什么是模块<br>nodejs应用程序的基本组成部分，文件与模块一一对应，这个文件可以是js代码，json或者编译过的C/C++扩展。例如之前例子中的<code>var http = require(&#39;http&#39;)</code>，其中的http就是nodejs的核心模块，内部用C++实现，外部用js封装，我通过require函数获取使用其中对象。<br>2、创建及加载模块</p>
+<ul>
+<li><p>创建模块<br>就是创建文件，这很简单，我们主要关注的是获取<br>nodejs提供了exports和require两个对象，其中exports是模块公开的接口，require用于从外部获取模块接口（对象）</p>
+</li>
+<li><p>单次加载<br>require不会重复加载模块，即无论调用多少次require，获取的模块都是同一个</p>
+</li>
+<li><p>覆盖exports</p>
+</li>
+</ul>
+<pre><code><span class="comment">//hello.js</span>
+<span class="function"><span class="keyword">function</span> <span class="title">Hello</span>(<span class="params"></span>) </span>{
+<span class="keyword">var</span> name;
+<span class="keyword">this</span>.setName = <span class="function"><span class="keyword">function</span>(<span class="params">thyName</span>) </span>{
+name = thyName;
+};
+<span class="keyword">this</span>.sayHello = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>{
+<span class="built_in">console</span>.log(<span class="string">'Hello '</span> + name);
+};
+};
+exports.Hello = Hello;
+</code></pre><p>此接口对象是export</p>
+<pre><code><span class="comment">//hello.js</span>
+<span class="function"><span class="keyword">function</span> <span class="title">Hello</span>(<span class="params"></span>) </span>{
+<span class="keyword">var</span> name;
+<span class="keyword">this</span>.setName = <span class="function"><span class="keyword">function</span>(<span class="params">thyName</span>) </span>{
+name = thyName;
+};
+<span class="keyword">this</span>.sayHello = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>{
+<span class="built_in">console</span>.log(<span class="string">'Hello '</span> + name);
+};
+};
+<span class="built_in">module</span>.exports = Hello;
+</code></pre><p>此接口对象是Hello,是用Hello覆盖了exports<br><em>不能用exports直接赋值代替对module.exports赋值，exports和module.exports是指向同一对象的变量，模块执行完毕后它本身会释放，而module不会</em></p>
+<p>3、创建包<br>我们可以通过require一个文件夹（即包），来获取文件夹中所有文件输出的对象<br>方法一：创建个文件夹somepackage,在其中创建index.js<br>方法二：创建个文件夹somepackage，在其中创建个package.json的文件，内容如下<code>{
+&quot;main&quot; : &quot;./lib/interface.js&quot;
+}</code>,然后将index.js重命名为interface.js并放入lib子文件夹下<br>可以在somepackage目录下运行npm init，生成符合标准的package.json<br>4、nodejs包管理器<br>nodejs包管理器，即npm</p>
+<p>a、获取一个包<br>格式：npm [install/i] [package_name]<br><code>$ npm install express</code></p>
+<p>b、本地模式和全局模式</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">模式</th>
+<th style="text-align:center">可通过require使用</th>
+<th style="text-align:center">注册PATH</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">本地模式</td>
+<td style="text-align:center">是</td>
+<td style="text-align:center">否</td>
+</tr>
+<tr>
+<td style="text-align:center">全局模式</td>
+<td style="text-align:center">否</td>
+<td style="text-align:center">是</td>
+</tr>
+</tbody>
+</table>
+<p><strong>六、调试</strong></p>
 
       
     </div>
@@ -232,6 +316,15 @@
   
     
 <nav id="article-nav">
+  
+    <a href="/2015/10/16/node-part2/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          node.js学习笔记——nodejs核心模块（二）
+        
+      </div>
+    </a>
   
   
     <a href="/2015/10/14/post2/" id="article-nav-older" class="article-nav-link-wrap">
